@@ -155,17 +155,12 @@ for (let i = 0; i < spanTagArray.length; i++) {
     spanTagArray[i].addEventListener("click", () => {
 
         filterBox.style.display = "grid";
-        // console.log(outputBoxCounter);
 
         // # get all current filterTags in #output
         outputContent = Array.from(document.querySelectorAll("#output span.filterTagItem"));
 
-        // * if != empty, check content
+        // * if array != empty, check content
         (outputContent.length == 0) ? createFilterItem(i) : checkAlreadyIn(i);
-
-        // TODO: FILTERFUNKTION
-
-        // TODO: REMOVE TAG
 
     });
 }
@@ -173,8 +168,6 @@ for (let i = 0; i < spanTagArray.length; i++) {
 
 // # CREATE TAG IN #OUTPUT
 let createFilterItem = (i) => {
-    // console.log("  ## createFilterItem START");
-    // console.log("      new tag: " + spanTagArray[i].innerHTML);
 
     var spanTag = document.createElement("span");
     spanTag.classList.add("filterTagItem");
@@ -190,47 +183,16 @@ let createFilterItem = (i) => {
 
     // get all current filterTags in #output
     outputContent = Array.from(document.querySelectorAll("#output span.filterTagItem"));
-
-    // console.log("      output length: " + outputContent.length);
-    // console.log("  ## createFilterItem END");
 }
 
 // # CHECK OB TAG SCHON VERWENDET
 let checkAlreadyIn = (i) => {
     
     const found = outputContent.find(element => element.innerHTML == spanTagArray[i].innerHTML);
-    console.log(found);
+    if (found == undefined) {createFilterItem(i)}
 
-    (found == undefined) ? console.log("new item") : console.log("alredy exists");
-
-    // console.log("");
-    // console.log("## checkAlreadyIn START");
-    // console.log("    for loop start:");
-    // console.log("    output length: " + outputContent.length);
-
-    let checkCounter = 0;
-    // console.log("    checkCounter = " + checkCounter);
-    
-    for (let j = 0; j < outputContent.length; j++) {
-
-        // console.log("    outputArrayItem: " + [j] + " " + outputContent[j].innerHTML);
-        // console.log("    ? CHECK on :  " + spanTagArray[i].innerHTML);
-
-        // if not yet contained - create items
-        if (outputContent[j].innerHTML !== spanTagArray[i].innerHTML) {
-            // console.log("    = NOT same");
-            checkCounter++; // when it is different, the counter is increased
-            // console.log("     checkCounter = " + checkCounter);
-        // } else {
-            // here no counter is increased
-            // console.log("    = SAME");
-            // console.log("     checkCounter = " + checkCounter);
-        }
-    }
-    // console.log("    for loop end");
-    // if counter is same as length, then create item
-    // if not the same - no item is created. because then it is already in there
-    (checkCounter == outputContent.length) ? createFilterItem(i) : (console.log("already existing item"));
-
-    // console.log("## checkAlreadyIn END");
 }
+
+// TODO: FILTERFUNKTION
+
+// TODO: REMOVE TAG
