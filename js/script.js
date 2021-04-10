@@ -3,6 +3,7 @@ let jobsArray = JSON.parse(joblisting);
 
 // output
 let output = document.getElementsByTagName("main")[0];
+const jobArray = [];
 
 // # put jobs into html
 
@@ -28,6 +29,7 @@ for (let i = 0; i < jobsArray.length; i++) {
     var divCont = document.createElement("div");
     divCont.classList.add("jobContainer");
     output.appendChild(divCont);
+    jobArray.push(divCont);
 
     var imgLogo = document.createElement("img");
     imgLogo.setAttribute("src", jobsArray[i].logo);
@@ -143,11 +145,14 @@ for (let i = 0; i < jobsArray.length; i++) {
 // == FILTERBOX
 // == /////////////////////
 
-let spanTagArray = document.querySelectorAll("span.tagItem");
-let outputBox = document.getElementById("output");
-let filterBox = document.getElementById("filterBox");
-let outputContent;
-let outputBoxCounter = 0;
+const spanTagArray = document.querySelectorAll("span.tagItem");
+const outputBox = document.getElementById("output");
+const filterBox = document.getElementById("filterBox");
+
+let outputContent = new Set();
+let jobContainerArray = document.querySelectorAll("div.jobContainer");
+
+
 
 // # for each .tagItem an EventListener
 for (let i = 0; i < spanTagArray.length; i++) {
@@ -157,10 +162,10 @@ for (let i = 0; i < spanTagArray.length; i++) {
         filterBox.style.display = "grid";
 
         // # get all current filterTags in #output
-        outputContent = Array.from(document.querySelectorAll("#output span.filterTagItem"));
+        // outputContent = Array.from(document.querySelectorAll("#output span.filterTagItem"));
 
         // * if array != empty, check content
-        (outputContent.length == 0) ? createFilterItem(i) : checkAlreadyIn(i);
+        (outputContent.size == 0) ? createFilterItem(i) : checkAlreadyIn(i);
 
     });
 }
@@ -182,17 +187,47 @@ let createFilterItem = (i) => {
     outputBox.appendChild(imgRemove);
 
     // get all current filterTags in #output
-    outputContent = Array.from(document.querySelectorAll("#output span.filterTagItem"));
+    // outputContent = Array.from(document.querySelectorAll("#output span.filterTagItem"));
+    outputContent.add(spanTagArray[i].innerHTML);
+
+    // FILTER JOBS
+    filterAllItems();
 }
 
 // # CHECK OB TAG SCHON VERWENDET
 let checkAlreadyIn = (i) => {
-    
-    const found = outputContent.find(element => element.innerHTML == spanTagArray[i].innerHTML);
-    if (found == undefined) {createFilterItem(i)}
 
+    // const found = outputContent.find(element => element.innerHTML == spanTagArray[i].innerHTML);
+    // if (found == undefined) {createFilterItem(i)}
+
+    if (outputContent.has(spanTagArray[i].innerHTML)) {
+        return;
+    } else {
+        createFilterItem(i);
+    }
 }
 
 // TODO: FILTERFUNKTION
+let filterAllItems = () => {
+
+    // in jedem Job:
+    jobContainerArray.forEach(element => {
+        let divSpans = element.lastChild;
+        let divSpansChildren = Array.from(divSpans.children);
+
+        // für alle bisher gesetzten filter:
+        for (let item of outputContent) {
+            // finde im Array divSpansChildren den Wert
+            const filterCheck = divSpansChildren.find(tag => tag.innerHTML == item);
+            // wenn undefined => gibts den filter darin nicht => display.none
+            if (filterCheck == undefined){element.style.display = "none";}
+        }
+    });
+}
+
 
 // TODO: REMOVE TAG
+    // remove from set
+    // filterAllItems()
+
+// TODO: clear all
