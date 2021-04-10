@@ -150,7 +150,9 @@ const outputBox = document.getElementById("output");
 const filterBox = document.getElementById("filterBox");
 
 let outputContent = new Set();
-let jobContainerArray = document.querySelectorAll("div.jobContainer");
+const jobContainerArray = document.querySelectorAll("div.jobContainer");
+const clearAll = document.getElementById("clear");
+
 
 
 
@@ -192,6 +194,7 @@ let createFilterItem = (i) => {
 
     // FILTER JOBS
     filterAllItems();
+    removeBtnListener();
 }
 
 // # CHECK OB TAG SCHON VERWENDET
@@ -207,7 +210,7 @@ let checkAlreadyIn = (i) => {
     }
 }
 
-// TODO: FILTERFUNKTION
+// # FILTERFUNKTION
 let filterAllItems = () => {
 
     // in jedem Job:
@@ -215,19 +218,59 @@ let filterAllItems = () => {
         let divSpans = element.lastChild;
         let divSpansChildren = Array.from(divSpans.children);
 
+        element.style.display = "grid";
+
         // für alle bisher gesetzten filter:
         for (let item of outputContent) {
             // finde im Array divSpansChildren den Wert
-            const filterCheck = divSpansChildren.find(tag => tag.innerHTML == item);
+            let filterCheck = divSpansChildren.find(tag => tag.innerHTML == item);
             // wenn undefined => gibts den filter darin nicht => display.none
-            if (filterCheck == undefined){element.style.display = "none";}
+            if (filterCheck == undefined) { element.style.display = "none"; }
         }
     });
 }
 
 
-// TODO: REMOVE TAG
-    // remove from set
-    // filterAllItems()
+// # REMOVE TAG
+
+const removeBtnListener = () => {
+    let removeFilterArray = document.querySelectorAll("img.removeFilterTag");
+
+    for (let j = 0; j < removeFilterArray.length; j++) {
+
+        // add eventlistener for each set filter to remove when clicked on
+        removeFilterArray[j].addEventListener("click", () => {
+
+            outputContent.delete(removeFilterArray[j].previousSibling.innerHTML);
+
+            removeFilterArray[j].previousSibling.remove();
+            removeFilterArray[j].remove();
+
+            // if filterbox = empty, display.none
+            if (outputBox.childNodes.length == 0) { filterBox.style.display = "none" }
+
+            filterAllItems();
+        });
+    }
+
+}
 
 // TODO: clear all
+// Clear btn event listener
+// all jobContainerArray.elements display.grid
+clearAll.addEventListener("click", () => {
+    jobContainerArray.forEach(element => element.style.display = "grid");
+    // outputContent = ();
+
+    for (var elem of outputContent) {
+        if (outputContent.has(elem)) {
+            outputContent.delete(elem);
+        }
+    }
+    while (outputBox.firstChild) {
+        outputBox.removeChild(outputBox.lastChild);
+      }
+    
+    // if filterbox = empty, display.none
+    if (outputBox.childNodes.length == 0) { filterBox.style.display = "none" }
+})

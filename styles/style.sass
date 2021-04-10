@@ -53,6 +53,7 @@ header
 #clear
     color: $colorCyanGreyVeryDark
     align-self: center
+    cursor: pointer
 
 .filterTagItem
     background-color: $colorBackground
@@ -62,6 +63,7 @@ header
     background-color: $colorCyanGreyVeryDark
     color: white
     height: 25px
+    cursor: pointer
     padding: 5px
 
 // == /////////////////////
@@ -80,6 +82,7 @@ div.jobContainer
     // TODO box shadow
     display: grid
     grid-template-rows: 0px repeat(4, auto)
+    grid-template-columns: 100%
     padding: 2em 1em
     border-radius: 10px
     margin: 3em 0
@@ -118,14 +121,14 @@ div.jobContainer
 .newBadge
     background-color: $colorPrimary
     color: white
-    padding:  0.8em
+    padding: 0.8em
     border-radius: 30px
     margin-right: 0.5em
 
 .featured
     background-color: $colorCyanGreyVeryDark
     color: white
-    padding:  0.8em
+    padding: 0.8em
     border-radius: 30px
 
 .featuredContent
@@ -138,9 +141,17 @@ div.jobContainer
 span.tagItem
     background-color: $colorBackground
     color: $colorPrimary
-    padding: 0.5em 
+    cursor: pointer
+    padding: 0.5em
     margin: 1em 0
     margin-right: 0.5em
+
+
+
+.attribution
+    text-align: center
+    font-size: smaller
+    margin-top: 2em
 
 
 // == /////////////////////
@@ -148,7 +159,50 @@ span.tagItem
 // == /////////////////////
 
 @media screen and ( min-width: 480px )
-    
+
     // # HEADER
     header
         background-image: url('../images/bg-header-desktop.svg')
+
+    div.jobContainer
+        // TODO box shadow
+        grid-template-rows: repeat(3, auto)
+        grid-template-columns: 15% 40% 35%
+        // padding: 2em 1em
+        // border-radius: 10px
+        // margin: 3em 0
+        img
+            grid-column: 1
+            grid-row: 1 / 4
+            width: 4em
+            position: relative
+            top: 0
+            place-self: center
+            
+        > div:nth-of-type(1) // company, new, featured
+            grid-row: 1
+            height: 2.5em
+            display: flex
+            align-content: center
+        > div:nth-of-type(2) // posted, contract, location
+            grid-row: 3
+            // color: $colorCyanGreyDarker
+            // display: flex
+            // align-content: center
+            // padding-bottom: 1.5em
+            // > *
+            //     padding-right: 0.5em
+            // span
+            //     line-height: 8px
+            //     align-self: top
+            //     font-weight: 700
+        > div:nth-of-type(3)   // tags
+            // display: flex
+            // flex-wrap: wrap
+            // box-sizing: border-box
+            // padding: 1em 0
+            grid-row: 1 / 4
+            border-top: none
+            justify-content: flex-end
+    .position
+        grid-row: 2
